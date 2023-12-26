@@ -1,18 +1,11 @@
 # pip install flask-mysqldb
 
-
-
-
-
-
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, render_template, request
 
 
 import view
-import config
-import database
 
 from flask_mysqldb import MySQL
 
@@ -26,14 +19,10 @@ mysql = MySQL(app)
 # The route() function of the Flask class is a decorator, 
 # which tells the application which URL should call 
 # the associated function.
-@app.route('/meryem')
-def hello_world():
-    return 'ben meryem  World'
 
 @app.route('/')
 def homepage():
 	return view.homePage()
-
 
 
 @app.route('/search', methods=['GET'])
@@ -48,11 +37,8 @@ def search():
 		#cursor = mysql.connection.cursor()
 		return filter.upper()
 		#cursor.execute(sorgu,(None,isim,yas))
-		#return database.get(filter, mysql)
 	
 	return 'Burcak sal bizi'
-
-
 
 
 # main driver function
