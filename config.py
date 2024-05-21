@@ -2,7 +2,7 @@
 
 FLASK_ENV = 'development'
 TESTING = True
-SECRET_KEY = "KPC4LKd7KvF0nRPGpvmv3Q"
+SECRET_KEY = "*******"
 STATIC_FOLDER = 'static'
 TEMPLATES_FOLDER = 'templates'
 MYSQL_HOST = "localhost"
