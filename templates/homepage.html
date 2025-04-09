@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Olympic Explorer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h1 class="mb-4 text-center">🏅 Olympic Results Explorer</h1>
+    <form method="POST" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <select class="form-select" name="country">
+                <option value="" {% if not selected_country %}selected{% endif %}>All Countries</option>
+                {% for c in countries %}
+                <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" name="year">
+                <option value="" {% if not selected_year %}selected{% endif %}>All Years</option>
+                {% for y in years %}
+                <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" name="sport">
+                <option value="" {% if not selected_sport %}selected{% endif %}>All Sports</option>
+                {% for s in sports %}
+                <option value="{{ s }}" {% if s == selected_sport %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 text-center">
+            <button class="btn btn-primary mt-3" type="submit">Search</button>
+        </div>
+    </form>
+
+    {% if no_results %}
+    <div class="alert alert-warning text-center" role="alert">
+        There is no record for this filters, please try another.
+    </div>
+    {% endif %}
+
+    {% if results %}
+    <h3 class="mb-3">Results:</h3>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Athlete</th>
+            <th>Sport</th>
+            <th>Year</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in results %}
+        <tr>
+            <td>
+                <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#athleteModal" data-athlete="{{ row[0] }}">
+                    {{ row[0] }}
+                </a>
+            </td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="athleteModal" tabindex="-1" aria-labelledby="athleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="athleteModalLabel">Athlete Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <h4 id="athleteName"></h4>
+        <p class="text-muted">Search result from Google Images</p>
+        <iframe id="athleteImage" width="100%" height="500px" style="border:none;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const athleteModal = document.getElementById('athleteModal');
+athleteModal.addEventListener('show.bs.modal', function (event) {
+    const link = event.relatedTarget;
+    const name = link.getAttribute('data-athlete');
+    document.getElementById('athleteName').textContent = name;
+    document.getElementById('athleteImage').src = `https://www.google.com/search?q=${encodeURIComponent(name)}&tbm=isch`;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
